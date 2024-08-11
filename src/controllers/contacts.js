@@ -47,14 +47,13 @@ export const createContactController = async (req, res) => {
 
   res.status(201).json({
     status: 201,
-    message: `Successfully created a contact!`,
-    data: student,
+    message: 'Successfully created a contact!',
+    data: contact,
   });
 };
 
-export const updateContactController = async (req, res) => {
+export const updateContactController = async (req, res, next) => {
   const { contactId } = req.params;
-
   const result = await updateContact(contactId, req.body);
 
   if (!result) {
@@ -66,14 +65,13 @@ export const updateContactController = async (req, res) => {
 
   res.status(status).json({
     status,
-    message: 'Successfully patched a contact!',
+    message: 'Successfully updated a contact!',
     data: result.contact,
   });
 };
 
 export const deleteContactController = async (req, res) => {
   const { contactId } = req.params;
-
   const contact = await deleteContact(contactId);
 
   if (!contact) {
