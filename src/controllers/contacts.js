@@ -3,6 +3,7 @@ import {
   getAllContacts,
   getContactsById,
   updateContact,
+  deleteContact,
 } from '../services/contacts.js';
 import createError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -62,7 +63,9 @@ export const createContactController = async (req, res) => {
 
 export const updateContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+  const userId = req.user._id;
+
+  const result = await updateContact(contactId, req.body, userId);
 
   if (!result) {
     next(createError(404, 'Contact not found'));
@@ -78,9 +81,10 @@ export const updateContactController = async (req, res, next) => {
   });
 };
 
-export const deleteContactController = async (req, res) => {
+export const deleteContactController = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await deleteContact(contactId);
+  const userId = req.user._id;
+  const contact = await deleteContact(contactId, userId);
 
   if (!contact) {
     next(createError(404, 'Contact not found'));
