@@ -3,6 +3,7 @@ import {
   getAllContacts,
   getContactsById,
   updateContact,
+  deleteContact,
 } from '../services/contacts.js';
 import createError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
@@ -75,7 +76,7 @@ export const deleteContactController = async (req, res, next) => {
   const contact = await deleteContact(contactId);
 
   if (!contact) {
-    next(createError(404, 'Contact not found'));
+    return next(createError(404, 'Contact not found'));
   }
 
   res.status(204).send();
