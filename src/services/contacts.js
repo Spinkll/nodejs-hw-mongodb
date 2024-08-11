@@ -48,35 +48,25 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const updateContact = async (userId, contactId, payload, options) => {
-  const user = await UsersCollection.findById({ userId });
-  if (!user) {
-    throw createHttpError(404, 'User not found');
-  }
-
+export const updateContact = async (contactId, payload, options) => {
   const rawResult = await ContactsCollection.findByIdAndUpdate(
-    contactId,
+    { _id: contactId },
     payload,
-    { new: true, ...options },
+    { new: true, includeResultMetadata: true, ...options },
   );
 
-  if (!rawResult) return null;
+  if (!rawResult || !rawResult.value) return null;
 
   return {
-    contact: rawResult,
-    isNew: Boolean(rawResult.upserted),
+    contact: rawResult.value,
+    isNew: Bollean(rawResult?.lastErrorObject?.upserted),
   };
 };
 
-export const deleteContact = async (contactId, userId) => {
+export const deleteContact = async (contactId) => {
   const contact = await ContactsCollection.findOneAndDelete({
     _id: contactId,
-    userId,
   });
-
-  if (!contact) {
-    return null; // Обработка отсутствия контакта
-  }
 
   return contact;
 };
