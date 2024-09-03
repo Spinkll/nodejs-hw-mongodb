@@ -23,7 +23,7 @@ router.get('/', ctrlWrapper(getContactsController));
 router.get('/:contactId', isValidId, ctrlWrapper(getContactsByIdController));
 1;
 router.post(
-  '/register',
+  '/',
   validateBody(createContactsValidationSchema),
   ctrlWrapper(createContactController),
 );
