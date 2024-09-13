@@ -11,11 +11,20 @@ tags:
 
 servers:
   - url: http://localhost:3000
-  - url: #посилання на задеплоєний сайт
+  - url: https://nodejs-hw-mongodb-5-wwd3.onrender.com
 paths:
-  /contacts/{id}:
+  /contacts:
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
     get:
-      $ref: ../swagger/paths/contacts/{id}/get.yaml
+      $ref: ../swagger/paths/contacts/get.yaml
+  /contacts/{contactId}:
+    get:
+      $ref: ../swagger/paths/contacts/contactId/get.yaml
+    patch:
+      $ref: ../swagger/paths/contacts/patch.yaml
+    delete:
+      $ref: ../swagger/paths/contacts/delete.yaml
 components:
   securitySchemes:
     bearerAuth:
